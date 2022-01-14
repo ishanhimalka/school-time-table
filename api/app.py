@@ -10,7 +10,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:zxcvbnm123@localho
 db = SQLAlchemy(app)
 CORS(app)
 
-
 # teacher model
 class Teacher(db.Model):
     __tablename__ = "teacherDetails"
@@ -37,7 +36,7 @@ class Teacher(db.Model):
     def __repr__(self):
         return f"{self.nic}"
 
-        db.create_all()
+db.create_all()
 
 # subject model
 class Subjects(db.Model):
@@ -57,7 +56,7 @@ class Subjects(db.Model):
     def __repr__(self):
         return f"{self.id}"
 
-    db.create_all()
+db.create_all()
 
 # TimeTableDetails model
 class TimeTableDetails(db.Model):
@@ -93,12 +92,13 @@ class TimeTableDetails(db.Model):
 
     def __repr__(self):
         return f"{self.id}"
-        db.create_all()
+
+db.create_all()
 
 # class model
 class ClassDetails(db.Model):
     __tablename__ = "classDetails"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(20), primary_key=True)
     grade = db.Column(db.String(20))
     name = db.Column(db.String(20))
     teacher = db.Column(db.String(10))
@@ -117,7 +117,7 @@ class ClassDetails(db.Model):
     def __repr__(self):
         return f"{self.id}"
 
-        db.create_all()
+db.create_all()
 
 # teachers control
 class TeacherDetailsSchema(ModelSchema):
@@ -147,7 +147,7 @@ class ClassSchema(ModelSchema):
         model = ClassDetails
         sqla_session = db.session
 
-    id = fields.Number(required=True)
+    id = fields.String(required=True)
     grade = fields.String(required=True)
     name = fields.String(required=True)
     teacher = fields.String(required=True)
