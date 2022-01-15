@@ -79,7 +79,7 @@ export default function TeachersDetails() {
                     <div className="md:grid md:grid-cols-3 md:gap-6">
 
                         <div className="mt-5 md:mt-0 md:col-span-1">
-                            <form action="#" method="POST">
+                            <form action="" method="">
                                 <div className="shadow overflow-hidden sm:rounded-md">
                                     <div className="px-4 py-5 bg-white items-center sm:p-6">
                                         <div className="grid grid-cols-6 gap-6">

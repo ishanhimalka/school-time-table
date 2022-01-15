@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import baseURL from "../../baseURL";
+import instance from "../../axios";
 
 
 export default function ClassDetails() {
@@ -9,40 +10,49 @@ export default function ClassDetails() {
         id: "",
         name: "",
         grade: 'grade1',
-        teacher: "",
     })
 
     useEffect(() => {
-        fetch(baseURL+'getclass')
-            .then(response => response.json())
-            .then(data => {
-                setTableData(data.classes)
+        instance.get(
+            'getclass',
+        )
+            .then(res => {
+                setTableData(res.data.classes)
             })
-            .catch(err => console.error(err));
-        fetch(baseURL+'getteacher')
-            .then(response => response.json())
-            .then(data => {
-                setTeacher(data.teacher)
+            .catch(err => {
+                console.log(err)
             })
-            .catch(err => console.error(err));
+        instance.get(
+            'getteacher',
+        )
+            .then(res => {
+                setTeacher(res.data.teacher)
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }, [])
 
     const newClass = () => {
-        console.log(classes.grade.replace(' ',''))
-        fetch(baseURL +'setclass', {
-            method: 'POST',
-            body: JSON.stringify({
-                id:classes.grade + classes.name,
-                name:classes.name,
-                grade:classes.grade,
-                teacher:classes.teacher,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
+
+        instance.post(
+            'setclass',
+            {
+                "id": classes.grade + classes.name,
+                "name": classes.name,
+                "grade": classes.grade,
+                "teacher": classes.teacher,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(function () {
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
     const updateClass = () => {
         fetch(baseURL +'updateclass/' + classes.grade + classes.name, {
@@ -80,12 +90,13 @@ export default function ClassDetails() {
                     <div className="md:grid md:grid-cols-3 md:gap-6">
 
                         <div className="mt-5 md:mt-0 md:col-span-1">
-                            <form action="#" method="POST">
+                            <form action="" method="">
                                 <div className="shadow overflow-hidden sm:rounded-md">
                                     <div className="px-4 py-5 bg-white items-center sm:p-6">
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                                <label htmlFor="name"
+                                                       className="block text-sm font-medium text-gray-700">
                                                     Name
                                                 </label>
                                                 <input
@@ -122,7 +133,7 @@ export default function ClassDetails() {
                                             <div className="col-span-6 sm:col-span-6">
 
                                                 <label htmlFor="teacher" className="block text-sm font-medium text-gray-700">
-                                                    Class
+                                                    Teacher
                                                 </label>
                                                 <select
                                                     id="teacher"
@@ -132,8 +143,9 @@ export default function ClassDetails() {
                                                     onChange={(e)=>setClass({...classes, teacher: e.target.value})}
                                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 >
+                                                    <option>select</option>
                                                     {teacher.map((v)=>(
-                                                        <option value={v.name}>{v.name}</option>
+                                                        <option>{v.name}</option>
                                                     ))}
 
 

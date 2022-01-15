@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields
 from marshmallow_sqlalchemy import ModelSchema
 
@@ -56,7 +56,29 @@ class Subjects(db.Model):
     def __repr__(self):
         return f"{self.id}"
 
+
 db.create_all()
+
+
+# # TieTable model
+# class TimeTable(db.Model):
+#     __tablename__="timetable"
+#     class_room = db.Column(db.String(20), primary_key=True)
+#     time= db.Column(ARRAY(Unicode))
+#
+#     def create(self):
+#         db.session.add(self)
+#         db.session.commit()
+#         return self
+#
+#     def __init__(self,class_room,time):
+#         self.class_room = class_room
+#         self.time = time
+#
+#     def __repr__(self):
+#         return f"{self.class_room}"
+#
+# db.create_all()
 
 # TimeTableDetails model
 class TimeTableDetails(db.Model):
