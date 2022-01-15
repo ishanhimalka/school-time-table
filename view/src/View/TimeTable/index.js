@@ -1,78 +1,10 @@
-import {useEffect, useState} from "react";
-import baseURL from "../../baseURL";
-
-
-export default function ClassDetails() {
-    const [tableData, setTableData] = useState([])
-    const [teacher, setTeacher] = useState([])
-    const [classes, setClass] = useState({
-        id: "",
-        name: "",
-        grade: 'grade1',
-        teacher: "",
-    })
-
-    useEffect(() => {
-        fetch(baseURL+'getclass')
-            .then(response => response.json())
-            .then(data => {
-                setTableData(data.classes)
-            })
-            .catch(err => console.error(err));
-        fetch(baseURL+'getteacher')
-            .then(response => response.json())
-            .then(data => {
-                setTeacher(data.teacher)
-            })
-            .catch(err => console.error(err));
-    }, [])
-
-    const newClass = () => {
-        console.log(classes.grade.replace(' ',''))
-        fetch(baseURL +'setclass', {
-            method: 'POST',
-            body: JSON.stringify({
-                id:classes.grade + classes.name,
-                name:classes.name,
-                grade:classes.grade,
-                teacher:classes.teacher,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
-    }
-    const updateClass = () => {
-        fetch(baseURL +'updateclass/' + classes.grade + classes.name, {
-            method: 'PUT',
-            body: JSON.stringify({
-                name:classes.name,
-                grade:classes.grade,
-                teacher:classes.teacher
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
-    }
-    const removeClass = () => {
-        fetch(baseURL +'delclass/' +classes.grade + classes.name, {
-            method: 'DELETE',
-        });
-    }
-
-    useEffect(() => {
-    }, [tableData])
+const TimeTable = () => {
     return (
         <div>
             <div>
                 <div className="hidden sm:block" aria-hidden="true">
                     <div className="py-5">
-                        <div className="border-t border-gray-200" />
+                        <div className="border-t border-gray-200"/>
                     </div>
                 </div>
 
@@ -85,7 +17,8 @@ export default function ClassDetails() {
                                     <div className="px-4 py-5 bg-white items-center sm:p-6">
                                         <div className="grid grid-cols-6 gap-6">
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                                <label htmlFor="name"
+                                                       className="block text-sm font-medium text-gray-700">
                                                     Name
                                                 </label>
                                                 <input
@@ -93,13 +26,14 @@ export default function ClassDetails() {
                                                     name="name"
                                                     id="name"
                                                     value={classes.name}
-                                                    onChange={(e)=>setClass({...classes, name: e.target.value})}
+                                                    onChange={(e) => setClass({...classes, name: e.target.value})}
                                                     autoComplete="name"
                                                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                                                 />
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
-                                                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                                                <label htmlFor="country"
+                                                       className="block text-sm font-medium text-gray-700">
                                                     Grade
                                                 </label>
                                                 <select
@@ -107,7 +41,7 @@ export default function ClassDetails() {
                                                     name="country"
                                                     autoComplete="country-name"
                                                     value={classes.grade}
-                                                    onChange={(v)=>
+                                                    onChange={(v) =>
                                                         setClass({...classes, grade: v.target.value})}
                                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 >
@@ -121,7 +55,8 @@ export default function ClassDetails() {
                                             </div>
                                             <div className="col-span-6 sm:col-span-6">
 
-                                                <label htmlFor="teacher" className="block text-sm font-medium text-gray-700">
+                                                <label htmlFor="teacher"
+                                                       className="block text-sm font-medium text-gray-700">
                                                     Class
                                                 </label>
                                                 <select
@@ -129,10 +64,10 @@ export default function ClassDetails() {
                                                     name="teacher"
                                                     autoComplete="teacher"
                                                     value={classes.teacher}
-                                                    onChange={(e)=>setClass({...classes, teacher: e.target.value})}
+                                                    onChange={(e) => setClass({...classes, teacher: e.target.value})}
                                                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                                 >
-                                                    {teacher.map((v)=>(
+                                                    {teacher.map((v) => (
                                                         <option value={v.name}>{v.name}</option>
                                                     ))}
 
@@ -171,7 +106,8 @@ export default function ClassDetails() {
                                 <div className="flex flex-col">
                                     <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                            <div
+                                                className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                                                 <table className="min-w-full divide-y divide-gray-200">
                                                     <thead className="bg-gray-50">
                                                     <tr>
@@ -227,7 +163,8 @@ export default function ClassDetails() {
                                                                 </div>
                                                             </td>
                                                             <td className="px-6 py-4 items-center whitespace-nowrap">
-                                                                <div className="text-sm text-gray-900">{item.teacher}</div>
+                                                                <div
+                                                                    className="text-sm text-gray-900">{item.teacher}</div>
                                                             </td>
                                                         </tr>
                                                     ))}
@@ -244,11 +181,12 @@ export default function ClassDetails() {
 
                 <div className="hidden sm:block" aria-hidden="true">
                     <div className="py-5">
-                        <div className="border-t border-gray-200" />
+                        <div className="border-t border-gray-200"/>
                     </div>
                 </div>
             </div>
         </div>
-
     )
 }
+
+export default TimeTable;
