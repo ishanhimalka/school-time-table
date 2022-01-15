@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, make_response
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 from marshmallow import fields
 from marshmallow_sqlalchemy import ModelSchema
 
@@ -9,7 +9,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:zxcvbnm123@localhost:3306/school'
 db = SQLAlchemy(app)
 CORS(app)
-
 
 # teacher model
 class Teacher(db.Model):
@@ -37,7 +36,7 @@ class Teacher(db.Model):
     def __repr__(self):
         return f"{self.nic}"
 
-        db.create_all()
+db.create_all()
 
 # subject model
 class Subjects(db.Model):
@@ -57,7 +56,29 @@ class Subjects(db.Model):
     def __repr__(self):
         return f"{self.id}"
 
-    db.create_all()
+
+db.create_all()
+
+
+# # TieTable model
+# class TimeTable(db.Model):
+#     __tablename__="timetable"
+#     class_room = db.Column(db.String(20), primary_key=True)
+#     time= db.Column(ARRAY(Unicode))
+#
+#     def create(self):
+#         db.session.add(self)
+#         db.session.commit()
+#         return self
+#
+#     def __init__(self,class_room,time):
+#         self.class_room = class_room
+#         self.time = time
+#
+#     def __repr__(self):
+#         return f"{self.class_room}"
+#
+# db.create_all()
 
 # TimeTableDetails model
 class TimeTableDetails(db.Model):
@@ -93,12 +114,13 @@ class TimeTableDetails(db.Model):
 
     def __repr__(self):
         return f"{self.id}"
-        db.create_all()
+
+db.create_all()
 
 # class model
 class ClassDetails(db.Model):
     __tablename__ = "classDetails"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(20), primary_key=True)
     grade = db.Column(db.String(20))
     name = db.Column(db.String(20))
     teacher = db.Column(db.String(10))
@@ -117,7 +139,7 @@ class ClassDetails(db.Model):
     def __repr__(self):
         return f"{self.id}"
 
-        db.create_all()
+db.create_all()
 
 # teachers control
 class TeacherDetailsSchema(ModelSchema):
@@ -147,7 +169,7 @@ class ClassSchema(ModelSchema):
         model = ClassDetails
         sqla_session = db.session
 
-    id = fields.Number(required=True)
+    id = fields.String(required=True)
     grade = fields.String(required=True)
     name = fields.String(required=True)
     teacher = fields.String(required=True)
